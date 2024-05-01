@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock%}
+{% block content %}
+<div class="container mt-5">
+    <form method="get" class="mb-3">
+        <button type="submit" name="show_taxonomy" value="true" class="btn btn-secondary">Show Taxonomy</button>
+        <button type="submit" name="hide_taxonomy" value="true" class="btn btn-secondary">Hide Taxonomy</button>
+    </form>
+
+    <table class="table table-bordered table-striped table-responsive text-center">
+        <thead class="thead-dark">
+            <tr>
+                {% for col in columns %}
+                <th>{{ col }}</th>
+                {% endfor %}
+                <th>Actions</th> <!-- Column for action buttons -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for bin in bins %}
+            <tr>
+                {% for col in columns %}
+                <td>
+                    {% if bin[col] is defined %}
+                        {{ bin[col] }}
+                    {% else %}
+                        Non disponible
+                    {% endif %}
+                </td>
+                {% endfor %}
+                <td>
+                    <button class="btn btn-info btn-sm">Maps</button>
+                    <button class="btn btn-warning btn-sm">Kegg</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock%}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock%}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>{{ context }}</h2>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Map Number</th>
+                <th>Pathway Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for (map_number, pathway_name), kegg_ids in maps %}
+            <tr>
+                <td>{{ map_number }}</td>
+                <td>{{ pathway_name }}</td>
+                <td>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                        Toggle ko_ids
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="collapse" id="collapse{{ loop.index }}">
+                        <strong>Associated KEGG IDs:</strong>
+                        {% if kegg_ids %}
+                        {% for kegg_id in kegg_ids %}
+                            {{ kegg_id | safe }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        None associated
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock%}
