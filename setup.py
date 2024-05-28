@@ -1,5 +1,14 @@
 # setup.py
 from setuptools import setup, find_packages
+import os
+
+
+def readme():
+    if os.path.isfile('README.md'):
+        with open('README.md') as f:
+            return f.read()
+    return "Application PanKEGG"
+
 
 setup(
     name='PanKEGG',
