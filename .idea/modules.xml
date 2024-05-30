@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PanKEGG.iml" filepath="$PROJECT_DIR$/.idea/PanKEGG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/flask.iml" filepath="$PROJECT_DIR$/.idea/flask.iml" />
     </modules>
   </component>
 </project>

@@ -4,6 +4,7 @@ import csv
 import io
 import json
 import click
+import pkg_resources
 import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
@@ -16,7 +17,7 @@ from scipy.spatial.distance import pdist
 
 app = Flask(__name__)
 app.secret_key = 'local'  # Définis une clé secrète pour sécuriser les sessions
-db_path = './data/pankegg.db'
+db_path = pkg_resources.resource_filename(__name__, 'data/pankegg.db')
 
 
 def float_format(value, format_spec="0.2f"):
@@ -26,35 +27,11 @@ def float_format(value, format_spec="0.2f"):
 app.jinja_env.filters['floatformat'] = float_format
 
 
-# def get_db_connection():
-#     print("Starting...")
-#     conn = sqlite3.connect('pankegg.db')
-#     conn.row_factory = sqlite3.Row
-#     return conn
-
-
 def get_db_connection():
     print("Starting...")
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
-
-
-# @app.route('/')
-# def show_bins():
-#     conn = get_db_connection()
-#     cur = conn.cursor()
-#     cur.execute("SELECT * FROM bin")
-#     bins = cur.fetchall()
-#     conn.close()
-#     return render_template('show_bins.html', bins=bins)
-
-#  comparison page ================================================================================================================
-# pathway_groups = {
-#     "1.0 Global and overview maps": ["map01100", "map01110", "map01120", "map01200", "map01210", "map01212", "map01230", "map01232", "map01250", "map01240", "map01220"],
-#     "1.1 Carbohydrate metabolism": ["map00010", "map00020", "map00030", "map00040", "map00051", "map00052", "map00053", "map00500", "map00520", "map00620", "map00630", "map00640", "map00650", "map00660", "map00562"]
-#     # Ajoutez les autres groupes ici
-# }
 
 
 @app.route('/get_taxonomy_data', methods=['POST'])
@@ -307,7 +284,8 @@ def parse_pathway_groups(file_path):
 
 
 # Initialize pathway_groups from the file
-pathway_groups = parse_pathway_groups('./data/pathway_groups.txt')
+pathway_groups_path = pkg_resources.resource_filename(__name__, 'data/pathway_groups.txt')
+pathway_groups = parse_pathway_groups(pathway_groups_path)
 
 # Route pour obtenir la liste des échantillons
 
@@ -1329,12 +1307,12 @@ def home():
 
 
 @click.command()
-@click.option('--database', "--d", default='./data/pankegg.db', help='Path to the SQLite database file.')
+@click.option('--database', "--d", default=pkg_resources.resource_filename(__name__, 'data/pankegg.db'), help='Path to the SQLite database file.')
 def start_server(database):
     global db_path
     db_path = database
     print(db_path)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 
 if __name__ == '__main__':

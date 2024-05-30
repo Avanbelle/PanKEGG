@@ -1,36 +1,28 @@
-# setup.py
 from setuptools import setup, find_packages
-import os
-
-
-def readme():
-    if os.path.isfile('README.md'):
-        with open('README.md') as f:
-            return f.read()
-    return "Application PanKEGG"
-
 
 setup(
-    name='PanKEGG',
-    version='0.1',
-    packages=find_packages(),
+    name='pankegg',
+    version='0.1.0',
+    packages=find_packages(include=['lib', 'lib.*']),
     include_package_data=True,
+    py_modules=['pankegg_make_db', 'pankegg_app'],
     install_requires=[
-        'Flask',
+        'flask',
         'pandas',
         'numpy',
         'scikit-learn',
         'scipy'
     ],
-    author='Vanbelle Arnaud',
-    author_email='arnaudvanbelle@live.be.com',
-    description='Application PanKEGG',
-    long_description=open('README.md').read(),
-    long_description_content_type='text/markdown',
-    url='https://github.com/Avanbelle/PanKEGG.git',
-    classifiers=[
-        'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-    ],
+    entry_points={
+        'console_scripts': [
+            'pankegg_app=pankegg_app:start_server',
+            'pankegg_make_db=pankegg_make_db:main',
+        ],
+    },
+    package_data={
+        'lib': ['../data/*.db', '../templates/*.html', '../data/*.csv', '../data/*.tsv', '../data/*.txt'],
+    },
+    author='Arnaud Vanbelle & Renaud Van Damme',
+    author_email='arnaudvanbelle@live.be',
+    description='Application Flask pour PanKEGG',
 )

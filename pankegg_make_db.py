@@ -1,16 +1,21 @@
 # main.py
 import argparse
+import os
+import csv
 from lib.db_utils import *
+import pkg_resources
 
-# Chemin de base vers la base de données
-DATABASE_PATH = "./data/pankegg.db"
+
+# Utilisation de pkg_resources pour obtenir les chemins des fichiers de données
+def get_resource_path(relative_path):
+    return pkg_resources.resource_filename(__name__, relative_path)
+
 
 # Chemins des fichiers de données
-PATHWAY_FILE = './data/kegg_map_orthologs.tsv'
-KO_FILE = './data/ko.txt'
-
-CSV_FILE_PATH = "./data/sample_path.csv"
-
+DATABASE_PATH = get_resource_path('data/pankegg.db')
+PATHWAY_FILE = get_resource_path('data/kegg_map_orthologs.tsv')
+KO_FILE = get_resource_path('data/ko.txt')
+CSV_FILE_PATH = get_resource_path('data/sample_path.csv')
 
 TABLES_TO_DROP = [
     'taxonomy', 'bin', 'map', 'kegg', 'bin_map_kegg',
